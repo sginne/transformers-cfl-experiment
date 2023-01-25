@@ -126,7 +126,7 @@ print (f'Ok sentence {padded_sentences[0]}')
 print (f'Not ok sentence {padded_wrong_sentences[0]}')
 
 summary_dataset=padded_sentences+padded_wrong_sentences
-
+random.shuffle(summary_dataset)
 print(f'First row of final dataset - {summary_dataset[0]}, lets save it to csv')
 
 pandas_dataset=pd.DataFrame(summary_dataset)

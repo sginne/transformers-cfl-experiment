@@ -1,4 +1,5 @@
-grammar_file='/home/sginne/src/transformers.cfl.experiment/CFL.grammar.dataset.1/grammar.txt'
+grammar_file='grammar.txt'
+dataset_file='dataset.csv'
 generate_max=5000
 #padding_length=100
 
@@ -7,6 +8,11 @@ from nltk import CFG
 import random
 from itertools import chain, repeat, islice
 from nltk.parse import RecursiveDescentParser
+import csv
+import pandas as pd
+def mark_dataset(sentences,truthfulness):
+    for sentence in sentences:
+        sentence.insert(0,truthfulness)
 def generate_random_sentence(tokens,length):
     return_sentence=[]
     #length=length-2
@@ -112,5 +118,17 @@ padded_wrong_sentences=[list(pad(sentence,padding_length,'-1')) for sentence in 
 
 padded_sentences=to_int_tokens(padded_sentences)
 padded_wrong_sentences=to_int_tokens(padded_wrong_sentences)
+
+mark_dataset(padded_sentences,True)
+mark_dataset(padded_wrong_sentences,False)
+
 print (f'Ok sentence {padded_sentences[0]}')
 print (f'Not ok sentence {padded_wrong_sentences[0]}')
+
+summary_dataset=padded_sentences+padded_wrong_sentences
+
+print(f'First row of final dataset - {summary_dataset[0]}, lets save it to csv')
+
+pandas_dataset=pd.DataFrame(summary_dataset)
+#print(pandas_dataset.head)
+pandas_dataset.to_csv(dataset_file,index=False, header=False)
